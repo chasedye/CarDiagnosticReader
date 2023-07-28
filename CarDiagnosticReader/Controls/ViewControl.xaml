@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="CarDiagnosticReader.Controls.ViewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CarDiagnosticReader.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <ScrollViewer>
+        <StackPanel>
+            <GroupBox Header="Heatmap Color Scheme">
+                <ComboBox>
+                    <ComboBoxItem>Grayscale</ComboBoxItem>
+                    <ComboBoxItem>Vibrant</ComboBoxItem>
+                </ComboBox>
+            </GroupBox>
+            <GroupBox Header="Gridline Settings">
+                <StackPanel>
+                    <CheckBox x:Name="gridlineCheckBox" Content="Show Gridlines" Click="gridlineCheckBox_Click"/>
+                    <TextBlock>Gridline Color:</TextBlock>
+                    <ComboBox>
+                        <ComboBoxItem>Black</ComboBoxItem>
+                        <ComboBoxItem>White</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Zoom Controls">
+                <Slider Minimum="0.5" Maximum="2.0" Value="1.0"/>
+            </GroupBox>
+            <GroupBox Header="Data Label Options">
+                <StackPanel>
+                    <CheckBox x:Name="dataLabelCheckBox" Content="Show Data Labels" Click="dataLabelCheckBox_Click" />
+                    <TextBlock>Font Size:</TextBlock>
+                    <Slider Minimum="8" Maximum="20" Value="12"/>
+                    <TextBlock>Font Color:</TextBlock>
+                    <ComboBox>
+                        <ComboBoxItem>Black</ComboBoxItem>
+                        <ComboBoxItem>White</ComboBoxItem>
+                    </ComboBox>
+                    <TextBlock>Decimal Precision:</TextBlock>
+                    <Slider Minimum="0" Maximum="2" Value="1"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

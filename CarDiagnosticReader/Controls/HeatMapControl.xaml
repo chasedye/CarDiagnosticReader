@@ -1,0 +1,167 @@
+﻿<UserControl x:Class="CarDiagnosticReader.Controls.HeatMapControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+             xmlns:vm="clr-namespace:CarDiagnosticReader.ViewModels" d:DataContext="{d:DesignInstance Type=vm:HeatMapViewModel}"
+             xmlns:local="clr-namespace:CarDiagnosticReader.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800"
+             >
+    <UserControl.Resources>
+        <local:HeatMapCell x:Key="RowColCount" />
+    </UserControl.Resources>
+
+    <Grid x:Name="HeatMapGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            
+        </Grid.ColumnDefinitions>
+
+        <!-- Button to toggle visibility -->
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" Height="100">
+            <ToggleButton Content="Toggle 3D View" x:Name="toggleButton3D" Click="ToggleButton_Click3D" IsEnabled="{Binding Is3DButtonEnabled}" Margin="5" />
+            <ToggleButton Content="Toggle 2D View" x:Name="toggleButton2D" Click="ToggleButton_Click2D" IsEnabled="{Binding Is2DButtonEnabled}" Margin="5" />
+            <Button Content="Save" x:Name="saveButton" Click="SaveTable"  Margin="5" />
+        </StackPanel>
+
+        <!-- X-axis labels -->
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical">
+
+            <ItemsControl Grid.Row="0" Grid.Column="1" ItemsSource="{Binding xAxisTitle }" Margin="0,20,0,0" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Black" BorderThickness="1" Background="#1C3D5A" Height="40">
+                            <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="White" />
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        <ItemsControl  Grid.Row="0" Grid.Column="1" ItemsSource="{Binding XLabels}" >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="1" Columns="{Binding DataContext.ColumnCount, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Rectangle Stroke="black" Width="60" Height="40">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="#1C3D5A" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="White" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        </StackPanel>
+
+        <!-- Y-axis labels -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <ItemsControl Grid.Row="1" Grid.Column="0" ItemsSource="{Binding yAxisTitle}" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Black" BorderThickness="1" Background="#1C3D5A" Width="Auto">
+                            <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="White" RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.RenderTransform>
+                                    <RotateTransform Angle="-90" />
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ItemsControl Grid.Row="1" Grid.Column="0" ItemsSource="{Binding YLabels}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                        <UniformGrid Rows="{Binding DataContext.RowCount, RelativeSource={RelativeSource AncestorType=UserControl}}" Columns="1" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                            <Rectangle Stroke="black" Width="80" Height="Auto">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="#1C3D5A" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                            <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="White" RenderTransformOrigin="0.5,0.5">
+                                
+                            </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        </StackPanel>
+
+
+        <!-- Heatmap-->
+        <ItemsControl Grid.Row="1" Grid.Column="1" x:Name="MyItemsControl"  ItemsSource="{Binding HeatMapData}">
+            <ItemsControl.ItemsPanel >
+                <ItemsPanelTemplate>
+                    <UniformGrid 
+                Rows="{Binding DataContext.RowCount, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                Columns="{Binding DataContext.ColumnCount, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Rectangle Stroke="Black" Width="Auto" Height="70" >
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="{Binding CellColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Rectangle.Fill>
+                            <Rectangle.ToolTip>
+                                <ToolTip Content="{Binding Value}" />
+                            </Rectangle.ToolTip>
+                        </Rectangle>
+                        <TextBox Text="{Binding Value,StringFormat=N2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                     HorizontalAlignment="Center" VerticalAlignment="Center" 
+                     FontWeight="Bold" Foreground="White" 
+                     Background="Transparent" BorderThickness="0" />
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
+            
+        <!-- 3D table-->
+        <h:HelixViewport3D Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" x:Name="viewport3D" ZoomExtentsWhenLoaded="True" ShowCoordinateSystem="True" Visibility="Collapsed" Height="350" Width="550"  >
+            <h:HelixViewport3D.Camera>
+                <!-- HelixViewport3D.ZoomExtentsWhenLoaded will figure out the position of the Camera -->
+                <PerspectiveCamera Position="0,0,10" LookDirection="20,20, -30" UpDirection="0,0,1"/>
+            </h:HelixViewport3D.Camera>
+
+        </h:HelixViewport3D>
+        
+        <!-- 2D table-->
+        <oxy:PlotView Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" x:Name="plotview2d" Visibility="Collapsed" Height="350" Width="550" >
+            
+        </oxy:PlotView>
+        
+    </Grid>
+</UserControl>

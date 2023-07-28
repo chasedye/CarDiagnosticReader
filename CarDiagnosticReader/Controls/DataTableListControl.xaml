@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="CarDiagnosticReader.Controls.DataTableListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CarDiagnosticReader.Controls"
+             mc:Ignorable="d" >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="ButtonColorBrush" Color="#E0E0E0"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+            <Button Grid.Row="0" x:Name="btnOpen" Content="Open" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Height="28" Width="100" Click="Button_Click" Background="{StaticResource ButtonColorBrush}" Foreground="Black"/>
+            <Button Grid.Row="1" Content="Binary File" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Height="34" Width="100" Click="Button_Click_1" Background="{StaticResource ButtonColorBrush}" RenderTransformOrigin="0.55,-1.853" Foreground="Black"/>
+
+        <ListBox x:Name="TextBlockList" Grid.Row="2" SelectionChanged="TextBlockList_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding title}" 
+                       TextTrimming="CharacterEllipsis" 
+                       Foreground="White">
+                        <TextBlock.ToolTip>
+                            <ToolTip Content="{Binding title}" />
+                        </TextBlock.ToolTip>
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+    </Grid>
+
+</UserControl>
