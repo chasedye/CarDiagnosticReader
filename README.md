@@ -1,3 +1,11 @@
+###Context:
+This is my senior design project from UCF developed for Group-A Engineering.
+The concept of this application is to allow a user to upload their car's binary file and 
+display their information in the form of editable heat maps with 2D and 3D graphs. I led this project
+with 3 other teammates and in the project we utilize a sql database to maintain all xml file definitions and  
+crested a custom graphical viewer to display the data as well as custom editable heat maps. 
+
+
 # CarDiagnosticReader
 - click binary file for ECU Binary/Hex file
 - click open for any XDF files if youre ecu file only has a correlating XDF
